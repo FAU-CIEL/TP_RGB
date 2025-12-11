@@ -18,6 +18,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_spinBox_Red_valueChanged(int value)
 {
+    QPalette palette;
+    ui->spinBox_Red->setAutoFillBackground(true);
+    palette.setColor(QPalette::Base, QColor(QColor(ui->spinBox_Red->value(), 0, 0)));
+    if (ui->spinBox_Red->value() <= 200)
+        palette.setColor(QPalette::Text, Qt::white);
+    else
+        palette.setColor(QPalette::Text, Qt::black);
+    ui->spinBox_Red->setPalette(palette);
     ui->verticalSlider_Red->setValue(value);
 }
 
@@ -28,6 +36,14 @@ void MainWindow::on_verticalSlider_Red_valueChanged(int value)
 
 void MainWindow::on_spinBox_Green_valueChanged(int value)
 {
+    QPalette palette;
+    ui->spinBox_Green->setAutoFillBackground(true);
+    palette.setColor(QPalette::Base, QColor(QColor(0, ui->spinBox_Green->value(), 0)));
+    if (ui->spinBox_Green->value() <= 190)
+        palette.setColor(QPalette::Text, Qt::white);
+    else
+        palette.setColor(QPalette::Text, Qt::black);
+    ui->spinBox_Green->setPalette(palette);
     ui->verticalSlider_Green->setValue(value);
 }
 
@@ -38,6 +54,11 @@ void MainWindow::on_verticalSlider_Green_valueChanged(int value)
 
 void MainWindow::on_spinBox_Blue_valueChanged(int value)
 {
+    QPalette palette;
+    ui->spinBox_Blue->setAutoFillBackground(true);
+    palette.setColor(QPalette::Base, QColor(QColor(0, 0, ui->spinBox_Blue->value())));
+    palette.setColor(QPalette::Text, Qt::white);
+    ui->spinBox_Blue->setPalette(palette);
     ui->verticalSlider_Blue->setValue(value);
 }
 
