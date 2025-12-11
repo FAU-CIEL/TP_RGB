@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>498</height>
+    <width>761</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -189,6 +189,16 @@
       </layout>
      </item>
     </layout>
+   </widget>
+   <widget class="QListView" name="listView_color">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>70</y>
+      <width>371</width>
+      <height>301</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

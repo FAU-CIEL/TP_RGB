@@ -34,6 +34,9 @@ private slots:
 
     void init();
 
+
+    void on_listView_color_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
 };
