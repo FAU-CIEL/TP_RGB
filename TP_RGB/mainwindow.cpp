@@ -112,6 +112,8 @@ void MainWindow::init()
     QStringListModel *modeleCouleurs = new QStringListModel(listeCouleurs);
     ui->listView_color->setModel(modeleCouleurs);
 
+    this->numero_choix = 1;
+
 }
 
 void MainWindow::on_listView_color_clicked(const QModelIndex &index)
@@ -126,3 +128,18 @@ void MainWindow::on_listView_color_clicked(const QModelIndex &index)
     ui->spinBox_Blue->setValue(blue);
 }
 
+void MainWindow::on_pushButton_Conserver_clicked()
+{
+    QString nam_label = "label_Choix" + QString::number(this->numero_choix);
+    QLabel *label = this->findChild<QLabel*>(nam_label);
+    QPalette palette;
+    palette.setColor(QPalette::Window, ui->label_Color->text());
+    label->setAutoFillBackground(true);
+    label->setText(ui->label_Color->text());
+    label->setPalette(palette);
+
+    if (this->numero_choix<6)
+        this->numero_choix++;
+    else
+        this->numero_choix = 1;
+}

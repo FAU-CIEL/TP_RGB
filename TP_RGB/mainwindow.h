@@ -12,6 +12,8 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    int numero_choix;
+    QStringList valeur_choix[5];
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -36,6 +38,8 @@ private slots:
 
 
     void on_listView_color_clicked(const QModelIndex &index);
+
+    void on_pushButton_Conserver_clicked();
 
 private:
     Ui::MainWindow *ui;
