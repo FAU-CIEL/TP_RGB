@@ -3,6 +3,11 @@
 
 #include <QStringList>
 #include <QStringListModel>
+#include <QMessageBox>
+#include <QFile>
+#include <qfiledialog.h>
+
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -112,8 +117,14 @@ void MainWindow::init()
     QStringListModel *modeleCouleurs = new QStringListModel(listeCouleurs);
     ui->listView_color->setModel(modeleCouleurs);
 
+    // initialise la valeur de depart pour les choix
     this->numero_choix = 1;
 
+    for (int i = 0; i < 6; i++)
+    {
+        QString nom_label = "label_Choix" + QString::number(i+1);
+        label[i] = this->findChild<QLabel*>(nom_label);
+    }
 }
 
 void MainWindow::on_listView_color_clicked(const QModelIndex &index)
@@ -130,8 +141,8 @@ void MainWindow::on_listView_color_clicked(const QModelIndex &index)
 
 void MainWindow::on_pushButton_Conserver_clicked()
 {
-    QString nam_label = "label_Choix" + QString::number(this->numero_choix);
-    QLabel *label = this->findChild<QLabel*>(nam_label);
+    QString nom_label = "label_Choix" + QString::number(this->numero_choix);
+    QLabel *label = this->findChild<QLabel*>(nom_label);
     QPalette palette;
     palette.setColor(QPalette::Window, ui->label_Color->text());
     label->setAutoFillBackground(true);
@@ -142,4 +153,111 @@ void MainWindow::on_pushButton_Conserver_clicked()
         this->numero_choix++;
     else
         this->numero_choix = 1;
+}
+
+
+void MainWindow::on_actionNew_triggered()
+{
+    QString name_file = "";
+    name_file = QFileDialog::getSaveFileName(this, "New File", "D:/fauret.SNIRW/deuxieme annee/TP CP/TP_RGB/TP_RGB", "Text files (*.pal)");
+    if (name_file != "")
+    {
+        QFile file(name_file);
+        file.open(QIODeviceBase::NewOnly);
+        file.close();
+    }
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString name_file = "";
+    name_file = QFileDialog::getOpenFileName(this, "Open file", "D:/fauret.SNIRW/deuxieme annee/TP CP/TP_RGB/TP_RGB", "Text files (*.pal)");
+    if (name_file != "")
+    {
+        QFile file(name_file);
+        if (!file.open(QIODeviceBase::ReadOnly | QIODeviceBase::Text))
+        {
+            return;
+        }
+
+        QTextStream flux(&file);
+        QString valeur = flux.readAll();
+        QStringList couleur = valeur.split("\n");
+
+        for (int i = 0; i < 6; i++)
+        {
+            if (couleur[i] != "")
+            {
+                QPalette palette;
+                this->label[i]->setText(couleur[i]);
+                palette.setColor(QPalette::Window, this->label[i]->text());
+                this->label[i]->setAutoFillBackground(true);
+                this->label[i]->setPalette(palette);
+            }
+        }
+        file.close();
+    }
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    QString name_file = "";
+    name_file = QFileDialog::getSaveFileName(this, "Save file", "D:/fauret.SNIRW/deuxieme annee/TP CP/TP_RGB/TP_RGB" ,"Text files (*.pal)");
+    if (name_file != "")
+    {
+        QFile file(name_file);
+        if (!file.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text))
+        {
+            return;
+        }
+
+        QTextStream flux(&file);
+        flux << this->formatage_fichier();
+        file.close();
+    }
+}
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    QString name_file = "";
+    name_file = QFileDialog::getSaveFileName(this, "New File", "D:/fauret.SNIRW/deuxieme annee/TP CP/TP_RGB/TP_RGB", "Text files (*.pal)");
+    if (name_file != "")
+    {
+        QFile file(name_file);
+        if (!file.open(QIODeviceBase::NewOnly | QIODeviceBase::Text))
+        {
+            return;
+        }
+        QTextStream flux(&file);
+        flux << this->formatage_fichier();
+        file.close();
+    }
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    QApplication::quit();
+}
+
+void MainWindow::on_actionAbout_the_app_triggered()
+{
+    QMessageBox::about(this, "About this app", "This application is designe to learn QT and the c++");
+}
+
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox::aboutQt(this);
+}
+
+QString MainWindow::formatage_fichier()
+{
+    QString listCouleur = "";
+    for (int  i = 0; i < 6; i++)
+    {
+        if (this->label[i]->text() != "Choix " + QString::number(i+1))
+            listCouleur += this->label[i]->text() + "\n";
+        else
+            listCouleur += "\n";
+    }
+    return listCouleur;
 }

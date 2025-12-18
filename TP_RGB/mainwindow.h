@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -13,7 +14,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     int numero_choix;
-    QStringList valeur_choix[5];
+    QLabel* label[6];
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -36,11 +37,25 @@ private slots:
 
     void init();
 
-
     void on_listView_color_clicked(const QModelIndex &index);
 
     void on_pushButton_Conserver_clicked();
 
+    void on_actionNew_triggered();
+
+    void on_actionOpen_triggered();
+
+    void on_actionSave_triggered();
+
+    void on_actionSave_As_triggered();
+
+    void on_actionExit_triggered();
+
+    void on_actionAbout_the_app_triggered();
+
+    void on_actionAbout_Qt_triggered();
+
+    QString formatage_fichier();
 private:
     Ui::MainWindow *ui;
 };
